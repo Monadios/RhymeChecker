@@ -86,5 +86,5 @@ class Display < Gosu::Window
   end
 end
 
-verse = Verse.new(File.read("ghost.txt").split("\n"))
+verse = Verse.new(File.read("mf.txt").split("\n"))
 game = Display.new(verse,20)
