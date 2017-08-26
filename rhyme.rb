@@ -1,15 +1,16 @@
 require 'ruby_rhymes'
 require 'gosu'
-
+require 'color-generator'
 
 class Verse
   attr_accessor :lines, :rhymes, :words
 
   def initialize(lines)
     @lines = lines
+    @colorizer = ColorGenerator.new saturation: 1, lightness: 0.5
     @rhymes = {}
     @rhymes_count = {}
-    @lines.map! {|l| l.split.each {|x| x.gsub(/s/, "")}}
+    @lines.map! {|l| l.split.map {|x| x.gsub(/s$/, "")}}
     @lines.each {|l| l.each{|w| add_rhyme(w.to_phrase.rhyme_key)}}
     @lines.map! do |l|
       l.map do |w|
@@ -25,7 +26,7 @@ class Verse
   end
 
   def rand_color
-    "%06x" % (rand * 0xffffff)
+    @colorizer.create_hex
   end
 end
 
@@ -87,4 +88,4 @@ class Display < Gosu::Window
 end
 
 verse = Verse.new(File.read("mf.txt").split("\n"))
-game = Display.new(verse,20)
+disp = Display.new(verse,20)
